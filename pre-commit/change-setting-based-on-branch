@@ -1,0 +1,17 @@
+#!/bin/bash
+branch=$(git status --short -b | cut -d' ' -f2-)
+case $branch in
+  gerrit*)
+    git config user.name "Personal Name"
+    echo "changed user.name to Personal Name"
+    ;;
+  master*)
+    git config user.name "Personal Name"
+    echo "changed user.name to Personal Name"
+    ;;
+  *)
+    echo ""
+    ;;
+esac
+
+git status
