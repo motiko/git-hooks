@@ -1,9 +1,7 @@
 #!/bin/sh
+# .git/hooks/pre-commit
 # Go through all the changed files (except for deleted and unmerged)
 # Check for changed lines
-added_lines="^\+"
-beginning_of_line="^\+[\s]*"
-evil_pattern="KAKI"
 # Set exit code to 0, will be set to 1 on error.
 exit_code=0
 # Grep git diff of files to commit
@@ -11,21 +9,19 @@ all_files=$(
 	git diff --cached --find-copies --find-renames --name-only --diff-filter=ACMRTXBU
 )
 
-if [[ -n $all_files ]]; 
+if [[ -n $all_files ]];
 then
 	for file in $all_files; do
-    
-    kaki_comments=$(
-      git diff --cached $file | grep -E "KAKI"
+
+    stop_pattern=$(
+      git diff --cached $file | grep -E "STOP_COMMIT"
     )
 
-		if [[ -n $kaki_comments ]];
+		if [[ -n $stop_pattern ]];
 		then
 			echo
 			echo -e "Found illegal commands in \033[1m$file:\033[0m"
-			echo -e '\E[0;32m'"$lines_with_no_comment"
-			echo -e "$lines_with_comment"'\033[0m'
-			echo -e "$kaki_comments"'\033[0m'
+			echo -e "\033[1m$stop_pattern\033[0m"
 			echo
 			# Abort commit
 			exit_code=1

@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/bash\
+# .git/hooks/pre-commit
 path_with_pattern=$(git diff --cached --find-copies --find-renames --name-only --diff-filter=ACR | grep "\.bak-mo$")
 if [[ -n $path_with_pattern  ]];
 then
@@ -15,7 +16,7 @@ then
 fi
 
 exit 0
-if [[ -n $path_with_pattern  ]]; 
+if [[ -n $path_with_pattern  ]];
 then
 	for path in $path_with_pattern; do
     folder=$(echo $path | sed 's/\/[^\/]*\.bak-mo$//')
